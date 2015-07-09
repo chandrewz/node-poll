@@ -14,9 +14,6 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
   // response.render('pages/index')
-  db.select().from('polls').where('id', 1).run(function(e) {
-  	response.send(e)
-  });
   // response.send(db)
 
   response.send('OK');
@@ -25,13 +22,14 @@ app.get('/', function(request, response) {
 app.get('/db', function (request, response) {
 	var db = require('pg-bricks').configure(process.env.DATABASE_URL);
 	db.select().from('polls').where('id', 1).run(function(e) {
+		console.log(e);
 		response.send(e)
 	});
 
 })
 
 app.get('/api/:id', function(req, res) {
-
+	response.send('OK');
 });
 
 app.listen(app.get('port'), function() {

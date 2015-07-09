@@ -21,7 +21,7 @@ app.get('/', function(request, response) {
 
 app.get('/db', function (request, response) {
 	var db = require('pg-bricks').configure(process.env.DATABASE_URL);
-	db.select().from('polls').where('id', 1).run(function(e) {
+	db.select().from('polls').where('id', 1).rows(function(e) {
 		console.log(e);
 		response.send(e)
 	});

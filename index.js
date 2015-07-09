@@ -1,8 +1,8 @@
 var express = require('express');
 var app = express();
-// var db = require('pg-bricks').configure('postgres://ibeexgacshptxj:uKR4n-Obk71fCbtKP-EOBvleCO@ec2-54-204-15-41.compute-1.amazonaws.com:5432/d8otn9p7ltoj9s');
+
 // db.insert('polls', {'question': 'Who is the greatest?'});
-var pg = require('pg');
+// var pg = require('pg');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -14,26 +14,25 @@ app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
   // response.render('pages/index')
-  // db.select().from('polls').where('id', 1).run(function(e) {
-  	// response.send(e)
-  // });
+  db.select().from('polls').where('id', 1).run(function(e) {
+  	response.send(e)
+  });
   // response.send(db)
 
   response.send('OK');
 });
 
 app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM polls', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else {
-      	response.render('pages/db', {results: result.rows} );
-      }
-    });
-  });
+	var db = require('pg-bricks').configure(process.env.DATABASE_URL);
+	db.select().from('polls').where('id', 1).run(function(e) {
+		response.send(e)
+	});
+
 })
+
+app.get('/api/:id', function(req, res) {
+
+});
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

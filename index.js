@@ -39,7 +39,7 @@ app.get('/db', function (request, response) {
 })
 
 app.get('/api/:id', function(req, res) {
-	response.send(knex('polls').join('options', 'polls.id', 'options.poll_id').select('users.id', 'contacts.phone').where('polls.id', 1).toJSON());
+	res.send(knex('polls').join('options', 'polls.id', 'options.poll_id').select('users.id', 'contacts.phone').where('polls.id', 1).toJSON());
 });
 
 app.listen(app.get('port'), function() {

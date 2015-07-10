@@ -6,14 +6,23 @@ var knex = require('knex')({
   connection: process.env.DATABASE_URL
 });
 
+/**
+ * Models
+ */
 var bookshelf = require('bookshelf')(knex);
-
 var Poll = bookshelf.Model.extend({
-  tableName: 'polls'
+  tableName: 'polls',
+  option: function() {
+  	this.belongsToMany(PollOption);
+  }
 });
 
-// db.insert('polls', {'question': 'Who is the greatest?'});
-// var pg = require('pg');
+var PollOption = bookshelf.Model.extend({
+	tableName: 'options',
+	poll: function() {
+		this.belongsTo(Poll);
+	}
+});
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -39,8 +48,11 @@ app.get('/db', function (request, response) {
 })
 
 app.get('/api/:id', function(request, response) {
+	Poll.fetchAll({id: 1}).then(funtion(model) {
+		console.log(model.toJSON());
+	});
 	response.send(
-		knex('polls').join('options', 'polls.id', 'options.poll_id').where('polls.id', 1).toJSON()
+		'HELLO'
 	);
 });
 

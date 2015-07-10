@@ -10,7 +10,8 @@
     "ejs": "^2.3.1",
     "express": "~4.9.x",
     "pg": "4.x",
-    "pg-bricks": "0.3.4"
+    "knex": "0.8.6",
+    "bookshelf": "0.8.1"
   },
   "engines": {
     "node": "0.12.2"

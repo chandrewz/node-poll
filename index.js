@@ -38,8 +38,10 @@ app.get('/db', function (request, response) {
 
 })
 
-app.get('/api/:id', function(req, res) {
-	res.send(knex('polls').join('options', 'polls.id', 'options.poll_id').select('users.id', 'contacts.phone').where('polls.id', 1).toJSON());
+app.get('/api/:id', function(request, response) {
+	response.send(
+		knex('polls').join('options', 'polls.id', 'options.poll_id').where('polls.id', 1).toJSON()
+	);
 });
 
 app.listen(app.get('port'), function() {

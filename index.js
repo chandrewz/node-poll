@@ -48,12 +48,8 @@ app.get('/db', function (request, response) {
 })
 
 app.get('/api/:id', function(request, response) {
-	Poll.where({id: 1}).fetch({withRelated: ['options']}).then(function(model) {
+	Poll.where({id: request.params.id}).fetch({withRelated: ['options']}).then(function(model) {
 		response.send(model.toJSON());
-		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-		console.log(model);
-		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-		console.log(model.options);
 	});
 });
 

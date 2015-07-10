@@ -50,13 +50,13 @@ app.get('/api/:id', function(request, response) {
 });
 
 app.get('/api/polls', function(request, response) {
-	Poll.fetchAll().then(function(poll) {
+	Poll.fetch().then(function(poll) {
 		response.send(poll.toJSON());
 	});
 });
 
 app.get('/api/options', function(request, response) {
-	PollOption.fetchAll().then(function(pollOption) {
+	PollOption.fetch().then(function(pollOption) {
 		response.send(pollOption.toJSON());
 	});
 });

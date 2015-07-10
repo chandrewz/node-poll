@@ -49,6 +49,16 @@ app.get('/api/polls', function(request, response) {
 	});
 });
 
+app.post('/api/poll/new', function(request, response) {
+	Poll.save({name: request.body.topic}).then(function(poll) {
+		response.send(poll.toJSON());
+	});
+	// options = request.body.options;
+	// for (i in options) {
+	// 	PollOption.save({name: options[i]});
+	// }
+});
+
 app.get('/api/poll/:id', function(request, response) {
 	Poll.where({id: request.params.id}).fetch({withRelated: ['options']}).then(function(poll) {
 		response.send(poll.toJSON());

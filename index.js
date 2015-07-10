@@ -48,16 +48,13 @@ app.get('/db', function (request, response) {
 })
 
 app.get('/api/:id', function(request, response) {
-	Poll.where({id: 1}).fetch().then(function(model) {
-		console.log(model.toJSON());
+	Poll.where({id: 1}).fetch({withRelated: ['customers']}).then(function(model) {
+		response.send(model.toJSON());
 		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 		console.log(model);
 		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-		console.log(model.option);
+		console.log(model.options);
 	});
-	response.send(
-		'HELLO'
-	);
 });
 
 app.listen(app.get('port'), function() {

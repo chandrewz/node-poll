@@ -12,15 +12,15 @@ var knex = require('knex')({
 var bookshelf = require('bookshelf')(knex);
 var Poll = bookshelf.Model.extend({
   tableName: 'polls',
-  option: function() {
-  	return this.belongsToMany(PollOption);
+  options: function() {
+  	return this.hasMany(PollOption, 'poll_id');
   }
 });
 
 var PollOption = bookshelf.Model.extend({
 	tableName: 'options',
 	poll: function() {
-		return this.belongsTo(Poll);
+		return this.belongsTo(Poll, 'id');
 	}
 });
 
@@ -48,7 +48,7 @@ app.get('/db', function (request, response) {
 })
 
 app.get('/api/:id', function(request, response) {
-	Poll.fetchAll({id: 1}).then(function(model) {
+	Poll.where({id: 1}).fetch().then(function(model) {
 		console.log(model.toJSON());
 		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 		console.log(model);

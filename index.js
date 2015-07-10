@@ -48,7 +48,7 @@ app.get('/db', function (request, response) {
 })
 
 app.get('/api/:id', function(request, response) {
-	Poll.where({id: 1}).fetch({withRelated: ['customers']}).then(function(model) {
+	Poll.where({id: 1}).fetch({withRelated: ['options']}).then(function(model) {
 		response.send(model.toJSON());
 		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 		console.log(model);

@@ -1,6 +1,17 @@
 var express = require('express');
 var app = express();
 
+var knex = require('knex')({
+  client: 'pg',
+  connection: process.env.DATABASE_URL
+});
+
+var bookshelf = require('bookshelf')(knex);
+
+var Poll = bookshelf.Model.extend({
+  tableName: 'polls'
+});
+
 // db.insert('polls', {'question': 'Who is the greatest?'});
 // var pg = require('pg');
 
@@ -20,27 +31,15 @@ app.get('/', function(request, response) {
 });
 
 app.get('/db', function (request, response) {
-	var knex = require('knex')({
-	  client: 'pg',
-	  connection: process.env.DATABASE_URL
-	});
-
-	var bookshelf = require('bookshelf')(knex);
-
-	var Poll = bookshelf.Model.extend({
-	  tableName: 'polls'
-	});
 
 	Poll.where({id: 1}).fetch().then(function(model) {
-		console.log(model);
-		console.log(model.toJSON());
-		response.send('OK');
+		response.send(model.toJSON());
 	});
 
 })
 
 app.get('/api/:id', function(req, res) {
-	response.send('OK');
+	response.send(knex('polls').join('options', 'polls.id', 'options.poll_id').select('users.id', 'contacts.phone').where('polls.id', 1).toJSON());
 });
 
 app.listen(app.get('port'), function() {

@@ -43,22 +43,21 @@ app.get('/', function(request, response) {
   response.send('OK');
 });
 
+app.get('/api/polls', function(request, response) {
+	Poll.fetchAll().then(function(polls) {
+		response.send(polls.toJSON());
+	});
+});
+
 app.get('/api/poll/:id', function(request, response) {
 	Poll.where({id: request.params.id}).fetch({withRelated: ['options']}).then(function(poll) {
 		response.send(poll.toJSON());
 	});
 });
 
-app.get('/api/polls', function(request, response) {
-	Poll.fetchAll().then(function(polls) {
-		console.log(polls);
-		response.send(polls.toJSON());
-	});
-});
-
 app.get('/api/options', function(request, response) {
-	PollOption.fetch().then(function(pollOption) {
-		response.send(pollOption.toJSON());
+	PollOption.fetchAll().then(function(options) {
+		response.send(options.toJSON());
 	});
 });
 

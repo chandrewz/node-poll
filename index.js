@@ -32,6 +32,10 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+
+/**
+ * Routes
+ */
 app.get('/', function(request, response) {
   // response.render('pages/index')
   // response.send(db)
@@ -39,17 +43,21 @@ app.get('/', function(request, response) {
   response.send('OK');
 });
 
-app.get('/db', function (request, response) {
-
-	Poll.where({id: 1}).fetch().then(function(model) {
-		response.send(model.toJSON());
-	});
-
-})
-
 app.get('/api/:id', function(request, response) {
-	Poll.where({id: request.params.id}).fetch({withRelated: ['options']}).then(function(model) {
-		response.send(model.toJSON());
+	Poll.where({id: request.params.id}).fetch({withRelated: ['options']}).then(function(poll) {
+		response.send(poll.toJSON());
+	});
+});
+
+app.get('/api/polls', function(request, response) {
+	Poll.fetchAll().then(function(poll) {
+		response.send(poll.toJSON());
+	});
+});
+
+app.get('/api/options', function(request, response) {
+	PollOption.fetchAll().then(function(pollOption) {
+		response.send(pollOption.toJSON());
 	});
 });
 

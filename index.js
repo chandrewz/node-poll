@@ -50,6 +50,10 @@ app.get('/db', function (request, response) {
 app.get('/api/:id', function(request, response) {
 	Poll.fetchAll({id: 1}).then(function(model) {
 		console.log(model.toJSON());
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+		console.log(model);
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+		console.log(model.option);
 	});
 	response.send(
 		'HELLO'

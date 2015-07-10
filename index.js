@@ -13,14 +13,14 @@ var bookshelf = require('bookshelf')(knex);
 var Poll = bookshelf.Model.extend({
   tableName: 'polls',
   option: function() {
-  	this.belongsToMany(PollOption);
+  	return this.belongsToMany(PollOption);
   }
 });
 
 var PollOption = bookshelf.Model.extend({
 	tableName: 'options',
 	poll: function() {
-		this.belongsTo(Poll);
+		return this.belongsTo(Poll);
 	}
 });
 

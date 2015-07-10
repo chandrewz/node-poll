@@ -43,15 +43,16 @@ app.get('/', function(request, response) {
   response.send('OK');
 });
 
-app.get('/api/:id', function(request, response) {
+app.get('/api/poll/:id', function(request, response) {
 	Poll.where({id: request.params.id}).fetch({withRelated: ['options']}).then(function(poll) {
 		response.send(poll.toJSON());
 	});
 });
 
 app.get('/api/polls', function(request, response) {
-	Poll.fetch().then(function(poll) {
-		response.send(poll.toJSON());
+	Poll.fetchAll().then(function(polls) {
+		console.log(polls);
+		response.send(polls.toJSON());
 	});
 });
 

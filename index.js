@@ -60,7 +60,7 @@ app.post('/api/poll/new', function(request, response) {
 		}
 		knex('options').insert(optionsArray).returning('id', 'name', 'votes').then(function(rows) {
 			console.log(rows);
-			res.send(rows);
+			response.send(rows);
 		})
 	});
 });

@@ -52,11 +52,15 @@ app.get('/api/polls', function(request, response) {
 });
 
 app.post('/api/poll/new', function(request, response) {
+	console.log(1);
 	console.log(request.body);
+	console.log(2);
 	console.log(request.body.topic);
-	Poll.save({name: request.body.topic}).then(function(poll) {
+	console.log(3);
+	new Poll({name: request.body.topic}).save().then(function(poll) {
 		response.send(poll.toJSON());
 	});
+	console.log(4);
 	// options = request.body.options;
 	// for (i in options) {
 	// 	PollOption.save({name: options[i]});

@@ -3,7 +3,6 @@ var app = express();
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.json()); // for parsing application/json
-app.use(multer()); // for parsing multipart/form-data
 
 app.set('port', (process.env.PORT || 5000));
 

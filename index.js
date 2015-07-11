@@ -62,11 +62,13 @@ app.post('/api/poll/new', function(request, response) {
 			optionsArray.push({poll_id: poll.id, name: options[i]});
 		}
 		console.log(optionsArray);
+		console.log(2.1);
 		console.log(knex('options').insert(optionsArray));
+		console.log(2.2);
 		new PollOption().query(function(qb) {
 			qb.insert(optionsArray);
 		}).save().then(function(model) {
-			consol.log(3);
+			console.log(3);
 			console.log(model.toJSON());
 			response.send(model.toJSON());
 		});

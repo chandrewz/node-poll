@@ -53,18 +53,25 @@ app.get('/api/polls', function(request, response) {
 
 app.post('/api/poll/new', function(request, response) {
 	console.log(1);
-	console.log(request.body);
-	console.log(2);
-	console.log(request.body.topic);
-	console.log(3);
 	new Poll({name: request.body.topic}).save().then(function(poll) {
-		response.send(poll.toJSON());
+		console.log(2);
+		optionsArray = [];
+		options = request.body.options;
+		console.log(options);
+		for (i in options) {
+			optionsArray.push({poll_id: poll.id, name: options[i]});
+		}
+		console.log(optionsArray);
+		console.log(knex('options').insert(optionsArray));
+		new PollOption().query(function(qb) {
+			qb.insert(optionsArray);
+		}).save().then(function(model) {
+			consol.log(3);
+			console.log(model.toJSON());
+			response.send(model.toJSON());
+		});
 	});
 	console.log(4);
-	// options = request.body.options;
-	// for (i in options) {
-	// 	PollOption.save({name: options[i]});
-	// }
 });
 
 app.get('/api/poll/:id', function(request, response) {

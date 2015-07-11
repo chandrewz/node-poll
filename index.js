@@ -52,8 +52,8 @@ app.get('/api/polls', function(request, response) {
 });
 
 app.post('/api/poll/new', function(request, response) {
-	console.log(request);
 	console.log(request.body);
+	console.log(request.body.topic);
 	Poll.save({name: request.body.topic}).then(function(poll) {
 		response.send(poll.toJSON());
 	});

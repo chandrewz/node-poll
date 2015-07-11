@@ -63,7 +63,9 @@ app.post('/api/poll/new', function(request, response) {
 		}
 		console.log(optionsArray);
 		console.log(2.1);
-		console.log(knex('options').insert(optionsArray));
+		knex('options').insert(optionsArray).then(function(rows) {
+			console.log(rows);
+		})
 		console.log(2.2);
 		// new PollOption().query(function(qb) {
 		// 	qb.insert(optionsArray);

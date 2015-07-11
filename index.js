@@ -1,5 +1,17 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(multer()); // for parsing multipart/form-data
+
+app.set('port', (process.env.PORT || 5000));
+
+app.use(express.static(__dirname + '/public'));
+
+// views is directory for all template files
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 
 var knex = require('knex')({
   client: 'pg',
@@ -24,15 +36,6 @@ var PollOption = bookshelf.Model.extend({
 	}
 });
 
-app.set('port', (process.env.PORT || 5000));
-
-app.use(express.static(__dirname + '/public'));
-
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-
 /**
  * Routes
  */
@@ -51,6 +54,7 @@ app.get('/api/polls', function(request, response) {
 
 app.post('/api/poll/new', function(request, response) {
 	console.log(request);
+	console.log(request.body);
 	Poll.save({name: request.body.topic}).then(function(poll) {
 		response.send(poll.toJSON());
 	});

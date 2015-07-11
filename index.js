@@ -58,9 +58,22 @@ app.post('/api/poll/new', function(request, response) {
 		for (i in options) {
 			optionsArray.push({ poll_id: poll.id, name: options[i] });
 		}
-		knex('options').insert(optionsArray).returning('id', 'name', 'votes').then(function(rows) {
-			console.log(rows);
-			response.send(rows);
+		knex('options').insert(optionsArray).returning('id').then(function(response) {
+			for (i in optionsArray) {
+				optionsArray[i] = {
+					id: reponse[i],
+					poll_id: poll.id,
+					name: optionsArray[i].name,
+					votes: 0
+				};
+			}
+			pollResult = {
+				id: poll.id,
+				name: poll.name,
+				options: optionsArray
+			};
+			console.log(pollResult);
+			response.send(pollResult);
 		})
 	});
 });

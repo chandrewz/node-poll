@@ -52,30 +52,17 @@ app.get('/api/polls', function(request, response) {
 });
 
 app.post('/api/poll/new', function(request, response) {
-	console.log(1);
-	new Poll({name: request.body.topic}).save().then(function(poll) {
-		console.log(2);
+	new Poll({ name: request.body.topic }).save().then(function(poll) {
 		optionsArray = [];
 		options = request.body.options;
-		console.log(options);
 		for (i in options) {
-			optionsArray.push({poll_id: poll.id, name: options[i]});
+			optionsArray.push({ poll_id: poll.id, name: options[i] });
 		}
-		console.log(optionsArray);
-		console.log(2.1);
-		knex('options').insert(optionsArray).then(function(rows) {
+		knex('options').insert(optionsArray).returning('id', 'name', 'votes').then(function(rows) {
 			console.log(rows);
+			res.send(rows);
 		})
-		console.log(2.2);
-		// new PollOption().query(function(qb) {
-		// 	qb.insert(optionsArray);
-		// }).save().then(function(model) {
-		// 	console.log(3);
-		// 	console.log(model.toJSON());
-		// 	response.send(model.toJSON());
-		// });
 	});
-	console.log(4);
 });
 
 app.get('/api/poll/:id', function(request, response) {

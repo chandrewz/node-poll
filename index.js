@@ -87,12 +87,16 @@ app.get('/api/poll/:id', function(request, response) {
 
 app.post('/api/poll/:id/vote', function(request, response) {
 	// fetch option by poll id and option id
+	console.log(request.body.option_id);
+	console.log(request.params.id);
 	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
+		console.log(option.toJSON());
 		// increment vote by 1
 		option.set({ votes: option.votes + 1 }).then(function(option) {
+			console.log(option.toJSON());
 			response.send(option.toJSON());
-		})
-	})
+		});
+	});
 });
 
 app.get('/api/options', function(request, response) {

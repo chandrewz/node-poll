@@ -71,7 +71,7 @@ app.post('/api/poll', function(request, response) {
 			}
 			pollResult = {
 				id: poll.id,
-				name: request.body.topic,
+				name: poll.get('name'),
 				options: optionsArray
 			};
 			response.send(pollResult);
@@ -87,12 +87,10 @@ app.get('/api/poll/:id', function(request, response) {
 
 app.post('/api/poll/:id/vote', function(request, response) {
 	// fetch option by poll id and option id
-	console.log(request.body.option_id);
-	console.log(request.params.id);
 	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
-		console.log(option.toJSON());
+		console.log(option);
 		// increment vote by 1
-		option.set({ votes: option.votes + 1 }).then(function(option) {
+		option.set({ votes: option.get('votes') + 1 }).then(function(option) {
 			console.log(option.toJSON());
 			response.send(option.toJSON());
 		});

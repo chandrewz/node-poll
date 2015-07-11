@@ -65,13 +65,13 @@ app.post('/api/poll/new', function(request, response) {
 		console.log(2.1);
 		console.log(knex('options').insert(optionsArray));
 		console.log(2.2);
-		new PollOption().query(function(qb) {
-			qb.insert(optionsArray);
-		}).save().then(function(model) {
-			console.log(3);
-			console.log(model.toJSON());
-			response.send(model.toJSON());
-		});
+		// new PollOption().query(function(qb) {
+		// 	qb.insert(optionsArray);
+		// }).save().then(function(model) {
+		// 	console.log(3);
+		// 	console.log(model.toJSON());
+		// 	response.send(model.toJSON());
+		// });
 	});
 	console.log(4);
 });

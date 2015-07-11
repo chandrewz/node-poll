@@ -88,8 +88,11 @@ app.get('/api/poll/:id', function(request, response) {
 app.post('/api/poll/:id/vote', function(request, response) {
 	// fetch option by poll id and option id
 	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
+		console.log(option);
 		// increment vote by 1
-		PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).set({ votes: option.get('votes') + 1 }).then(function(option) {
+		option
+		.set({ votes: option.get('votes') + 1 })
+		.then(function(option) {
 			console.log(option.toJSON());
 			response.send(option.toJSON());
 		});

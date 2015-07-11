@@ -85,7 +85,7 @@ app.get('/api/poll/:id', function(request, response) {
 	});
 });
 
-app.post('/api/poll/:id/vote', function(request, response) {
+app.put('/api/poll/:id', function(request, response) {
 	// fetch option by poll id and option id
 	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
 		console.log(option);

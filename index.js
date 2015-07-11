@@ -90,8 +90,9 @@ app.post('/api/poll/:id/vote', function(request, response) {
 	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
 		console.log(option);
 		// increment vote by 1
-		option.set({ votes: option.get('votes') + 1 });
-		response.send('OK');
+		new PollOption({ id: request.body.option_id, poll_id: request.params.id }).set({ votes: option.get('votes') + 1 }, {patch: true}).then(function(option) {
+			response.send(option.toJSON());
+		});
 	});
 });
 

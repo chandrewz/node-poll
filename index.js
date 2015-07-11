@@ -79,7 +79,7 @@ app.post('/api/poll', function(request, response) {
 	});
 });
 
-var PollController = require('./controllers/PollController.js');
+var PollController = require('./controllers/PollController');
 
 app.get('/api/poll/:id', function(request, response) {
 	response.send(PollController.getPoll(request.params.id));

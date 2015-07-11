@@ -79,10 +79,10 @@ app.post('/api/poll', function(request, response) {
 	});
 });
 
+var PollController = require('./controllers/PollController.js');
+
 app.get('/api/poll/:id', function(request, response) {
-	Poll.where({ id: request.params.id }).fetch({ withRelated: ['options'] }).then(function(poll) {
-		response.send(poll.toJSON());
-	});
+	response.send(PollController.getPoll(request.params.id));
 });
 
 app.put('/api/poll/:id/vote', function(request, response) {

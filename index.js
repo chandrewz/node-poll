@@ -1,8 +1,23 @@
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser');
 
-app.use(bodyParser.json()); // for parsing application/json
+// for parsing application/json
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+// for validating input
+var validator = require('express-validator');
+app.use(validator({
+	customValidators: {
+		isArray: function(value) {
+			return Array.isArray(value);
+		},
+		eachIsNotEmpty: function(values, prop) {
+			return values.every(function(val) {
+				return validator.notEmpty(val.prop);
+		});
+	}
+}));
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -52,6 +67,11 @@ app.get('/api/polls', function(request, response) {
 });
 
 app.post('/api/poll', function(request, response) {
+
+	// validations
+	request.checkBody('topic', 'Invalid poll topic.').notEmpty().isAlpha();
+	request.checkBody('options', 'Invalid poll topic.').isArray().eachIsNotEmpty();
+
 	new Poll({ name: request.body.topic }).save().then(function(poll) {
 		optionsArray = [];
 		options = request.body.options;
@@ -88,7 +108,6 @@ app.get('/api/poll/:id', function(request, response) {
 app.put('/api/poll/:id/vote', function(request, response) {
 	// fetch option by poll id and option id
 	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
-		console.log(option);
 		// increment vote by 1
 		new PollOption({ id: request.body.option_id, poll_id: request.params.id }).save({ votes: option.get('votes') + 1 }, {patch: true}).then(function(option) {
 			response.send(option.toJSON());

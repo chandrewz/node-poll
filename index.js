@@ -58,10 +58,12 @@ app.post('/api/poll/new', function(request, response) {
 		for (i in options) {
 			optionsArray.push({ poll_id: poll.id, name: options[i] });
 		}
-		knex('options').insert(optionsArray).returning('id').then(function(response) {
+		// use knex for batch inserts, returning id of inserted options
+		knex('options').insert(optionsArray).returning('id').then(function(optionIds) {
+			// create a nice json response to send back
 			for (i in optionsArray) {
 				optionsArray[i] = {
-					id: reponse[i],
+					id: optionIds[i],
 					poll_id: poll.id,
 					name: optionsArray[i].name,
 					votes: 0

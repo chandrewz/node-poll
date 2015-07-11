@@ -51,7 +51,7 @@ app.get('/api/polls', function(request, response) {
 	});
 });
 
-app.post('/api/poll/new', function(request, response) {
+app.post('/api/poll', function(request, response) {
 	new Poll({ name: request.body.topic }).save().then(function(poll) {
 		optionsArray = [];
 		options = request.body.options;
@@ -71,19 +71,28 @@ app.post('/api/poll/new', function(request, response) {
 			}
 			pollResult = {
 				id: poll.id,
-				name: poll.name,
+				name: request.body.topic,
 				options: optionsArray
 			};
-			console.log(pollResult);
 			response.send(pollResult);
 		})
 	});
 });
 
 app.get('/api/poll/:id', function(request, response) {
-	Poll.where({id: request.params.id}).fetch({withRelated: ['options']}).then(function(poll) {
+	Poll.where({ id: request.params.id }).fetch({ withRelated: ['options'] }).then(function(poll) {
 		response.send(poll.toJSON());
 	});
+});
+
+app.post('/api/poll/:id/vote', function(request, response) {
+	// fetch option by poll id and option id
+	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
+		// increment vote by 1
+		option.set({ votes: option.votes + 1 }).then(function(option) {
+			response.send(option.toJSON());
+		})
+	})
 });
 
 app.get('/api/options', function(request, response) {

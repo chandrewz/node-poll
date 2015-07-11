@@ -57,6 +57,11 @@ app.post('/api/poll', function(request, response) {
 	// validations
 	request.checkBody('topic', 'Invalid poll topic.').notEmpty().isAlpha();
 	request.checkBody('options', 'Invalid poll topic.').isArray().eachIsNotEmpty();
+	var errors = request.request.validationErrors();
+	if (errors) {
+		response.send('Validation errors', 400);
+		return;
+	}
 
 	new Poll({ name: request.body.topic }).save().then(function(poll) {
 		optionsArray = [];
@@ -93,9 +98,15 @@ app.get('/api/poll/:id', function(request, response) {
 
 app.put('/api/poll/:id/vote', function(request, response) {
 	// fetch option by poll id and option id
-	PollOption.where({ id: request.body.option_id, poll_id: request.params.id }).fetch().then(function(option) {
+	PollOption.where({
+		id: request.body.option_id,
+		poll_id: request.params.id
+	}).fetch().then(function(option) {
 		// increment vote by 1
-		new PollOption({ id: request.body.option_id, poll_id: request.params.id }).save({ votes: option.get('votes') + 1 }, {patch: true}).then(function(option) {
+		new PollOption({
+			id: request.body.option_id,
+			poll_id: request.params.id
+		}).save({ votes: option.get('votes') + 1 }, { patch: true }).then(function(option) {
 			response.send(option.toJSON());
 		});
 	});

@@ -27,28 +27,13 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-var knex = require('knex')({
-  client: 'pg',
-  connection: process.env.DATABASE_URL
-});
-
 /**
  * Models
  */
-var bookshelf = require('bookshelf')(knex);
-var Poll = bookshelf.Model.extend({
-  tableName: 'polls',
-  options: function() {
-  	return this.hasMany(PollOption, 'poll_id');
-  }
-});
-
-var PollOption = bookshelf.Model.extend({
-	tableName: 'options',
-	poll: function() {
-		return this.belongsTo(Poll, 'id');
-	}
-});
+var models = require('./models/models');
+var knex = models.knex;
+var Poll = models.Poll;
+var PollOption = models.PollOption;
 
 /**
  * Routes

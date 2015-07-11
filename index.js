@@ -15,6 +15,7 @@ app.use(validator({
 		eachIsNotEmpty: function(values, prop) {
 			return values.every(function(val) {
 				return validator.notEmpty(val.prop);
+			}
 		});
 	}
 }));

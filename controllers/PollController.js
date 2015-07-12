@@ -6,6 +6,8 @@ var knex = models.knex;
 var Poll = models.Poll;
 var PollOption = models.PollOption;
 
+var util = require('util');
+
 /**
  * Find all polls with their names. No poll options included.
  */
@@ -21,6 +23,15 @@ exports.getAllPolls = function(request, response) {
 exports.getPoll = function(request, response) {
 	Poll.where({ id: request.params.id }).fetch({ withRelated: ['options'] }).then(function(poll) {
 		response.send(poll.toJSON());
+	});
+}
+
+/**
+ * Find all poll options, without the poll.
+ */
+exports.getAllOptions = function(request, response) {
+	PollOption.fetchAll().then(function(options) {
+		response.send(options.toJSON());
 	});
 }
 

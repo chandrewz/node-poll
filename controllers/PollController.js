@@ -26,11 +26,20 @@ exports.getAllPolls = function(request, response) {
 
 /**
  * GET /api/poll/:id
+ * GET /poll/:id
  * Find a poll by id and returns it with the related poll options.
  */
-exports.getPoll = function(request, response) {
+exports.getPoll = function(request, response, json) {
 	Poll.where({ id: request.params.id }).fetch({ withRelated: ['options'] }).then(function(poll) {
-		response.send(poll.toJSON());
+		if (json) {
+			response.send(poll.toJSON());
+		} else {
+			var poll = JSON.parse(poll);
+			response.render('pages/poll', {
+				poll: poll,
+				options: poll.options
+			});
+		}
 	});
 }
 

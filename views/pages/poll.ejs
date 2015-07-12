@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+
+    <h1><%= poll.name %></h1>
+    
+    <form>
+      <div class="form-group text-left">
+        <% options.forEach(function(option) { %>
+          <div class="radio radio-primary">
+            <label>
+              <input type="radio" name="option" value="<% option.id %>">
+              <% option.name %>
+            </label>
+          </div>
+        <% }) %>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-lg btn-primary">Vote</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<% include ../partials/modal.ejs %>
+<% include ../partials/footer.ejs %>
+
+</body>
+
+</html>

@@ -29,6 +29,8 @@ app.set('view engine', 'ejs');
 var PollController = require('./controllers/PollController');
 
 app.get('/', function(request, response) { response.render('pages/index'); });
+app.get('/poll', function(request, response) { response.render('pages/poll'); });
+app.get('/poll/:id', function(request, response) { PollController.getPoll(request, response) });
 app.get('/api/polls', function(request, response) { PollController.getAllPolls(request, response); });
 app.get('/api/poll/:id', function(request, response) { PollController.getPoll(request, response); });
 app.post('/api/poll', function(request, response) { PollController.createPoll(request, response); });

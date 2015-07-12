@@ -1,8 +1,11 @@
-
+/**
+ * Submit the poll.
+ */
 $( "form" ).submit(function( event ) {
 	event.preventDefault();
 	var formArray = $( this ).serializeArray();
 
+	// properly create json from form
 	var postData = {};
 	postData.name = formArray[0].value
 	postData.options = [];

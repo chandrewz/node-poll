@@ -29,6 +29,17 @@ var PollOption = bookshelf.Model.extend({
 	}
 });
 
+/**
+ * Table: ip_addresses
+ */
+var IpAddress = bookshelf.Model.extend({
+	tableName: 'ip_address',
+	poll: function() {
+		return this.belongsTo(Poll);
+	}
+});
+
 exports.knex = knex;
 exports.Poll = Poll;
 exports.PollOption = PollOption;
+exports.IpAddress = IpAddress;

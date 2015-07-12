@@ -56,15 +56,16 @@ exports.getOption = function(request, response) {
 exports.createPoll = function(request, response) {
 
 	// validations
-	request.check('topic', 'Invalid poll topic.').notEmpty();
+	request.check('name', 'Invalid poll name.').notEmpty();
 	request.check('options', 'Invalid poll options.').isArray();
+	request.sanitize('track_ip').toBoolean();
 	var errors = request.validationErrors();
 	if (errors) {
 		response.send(util.inspect(errors), 400);
 		return;
 	}
 
-	new Poll({ name: request.body.topic }).save().then(function(poll) {
+	new Poll({ name: request.body.name, track_ip: request.track_ip }).save().then(function(poll) {
 		optionsArray = [];
 		options = request.body.options;
 		for (i in options) {
@@ -105,17 +106,39 @@ exports.vote = function(request, response) {
 		return;
 	}
 
+	var pollId = request.params.id;
+
 	// fetch option by poll id and option id
 	PollOption.where({
 		id: request.body.option_id,
-		poll_id: request.params.id
+		poll_id: pollId
 	}).fetch({ withRelated: ['options'] }).then(function(option) {
+
+		// check if poll cares about ip
+		var track = option.related('poll').track_ip;
+		if (track) {
+			IpAddress.where({ poll_id: pollId, ip_address: request.ip }).fetch().then(function(ip) {
+				if (ip) {
+					// this ip has already voted on this poll
+					response.send({msg: request.ip + ' has already voted.'}, '400');
+					return;
+				}
+			})
+		}
+
 		// increment vote by 1
 		new PollOption({
 			id: request.body.option_id,
-			poll_id: request.params.id
+			poll_id: pollId
 		}).save({ votes: option.get('votes') + 1 }, { patch: true }).then(function(option) {
-			response.send(option.toJSON());
+			if (track) {
+				// if ip should be tracked
+				new IpAddress({ poll_id: pollId, ip_address: request.ip }).save().then(function(ip) {
+					response.send(ip.toJSON());
+				});
+			} else {
+				response.send(option.toJSON());
+			}
 		});
 	});
 }

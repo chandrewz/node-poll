@@ -129,10 +129,11 @@ exports.vote = function(request, response) {
 		console.log(3)
 		console.log(option);
 		console.log(option.related('poll'))
-		console.log(option.related('poll').attributes)
+		console.log(option.related('poll').attributes.track_ip)
+		console.log(option.related('poll').get('track_ip'))
 
 		// check if poll cares about ip
-		var track = option.related('poll').track_ip;
+		var track = option.related('poll').attributes.track_ip;
 		if (track) {
 			console.log(3.1)
 			IpAddress.where({ poll_id: pollId, ip_address: request.ip }).fetch().then(function(ip) {

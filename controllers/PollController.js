@@ -85,7 +85,8 @@ exports.createPoll = function(request, response) {
 			pollResult = {
 				id: poll.id,
 				name: poll.get('name'),
-				options: optionsArray
+				options: optionsArray,
+				track_ip: poll.get('track_ip')
 			};
 			response.send(pollResult);
 		})
@@ -107,12 +108,15 @@ exports.vote = function(request, response) {
 	}
 
 	var pollId = request.params.id;
+	var optionId = request.body.option_id;
 
 	// fetch option by poll id and option id
 	PollOption.where({
-		id: request.body.option_id,
+		id: optionId,
 		poll_id: pollId
 	}).fetch({ withRelated: ['options'] }).then(function(option) {
+
+		console.log(option);
 
 		// check if poll cares about ip
 		var track = option.related('poll').track_ip;
@@ -128,7 +132,7 @@ exports.vote = function(request, response) {
 
 		// increment vote by 1
 		new PollOption({
-			id: request.body.option_id,
+			id: optionId,
 			poll_id: pollId
 		}).save({ votes: option.get('votes') + 1 }, { patch: true }).then(function(option) {
 			if (track) {

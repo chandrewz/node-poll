@@ -49,7 +49,6 @@ exports.getAllOptions = function(request, response) {
  */
 exports.getOption = function(request, response) {
 	PollOption.where({ id: request.params.id }).fetch({ withRelated: ['poll'] }).then(function(option) {
-		console.log(option);
 		response.send(option.toJSON());
 	});
 }
@@ -105,20 +104,15 @@ exports.createPoll = function(request, response) {
  */
 exports.vote = function(request, response) {
 
-	console.log(1)
-
 	request.check('option_id', 'Invalid option_id.').notEmpty().isInt();
-	var errors = request.validationErrors();
-	if (errors) {
-		console.log(1.1)
+	if (request.validationErrors()) {
 		response.send(util.inspect(errors), 400);
 		return;
 	}
 
-	console.log(2)
-
 	var pollId = request.params.id;
 	var optionId = request.body.option_id;
+	var ipAddress = request.headers['x-forwarded-for'] ? request.headers['x-forwarded-for'].split(',')[0] : request.connection.remoteAddress;
 
 	// fetch option by poll id and option id
 	PollOption.where({
@@ -126,25 +120,17 @@ exports.vote = function(request, response) {
 		poll_id: pollId
 	}).fetch({ withRelated: ['poll'] }).then(function(option) {
 
-		console.log(3)
-		console.log(option);
-		console.log(option.related('poll'))
-		console.log(option.related('poll').attributes.track_ip)
-		console.log(option.related('poll').get('track_ip'))
-
 		// check if poll cares about ip
-		var track = option.related('poll').attributes.track_ip;
+		var track = option.related('poll').get('track_ip');
 		if (track) {
-			console.log(3.1)
-			IpAddress.where({ poll_id: pollId, ip_address: request.ip }).fetch().then(function(ip) {
+			IpAddress.where({ poll_id: pollId, ip_address: ipAddress }).fetch().then(function(ip) {
 				if (ip) {
 					// this ip has already voted on this poll
-					response.send({msg: request.ip + ' has already voted.'}, '400');
+					response.send({msg: ipAddress + ' has already voted.'}, '400');
 					return;
 				}
 			})
 		}
-		console.log(4)
 
 		// increment vote by 1
 		new PollOption({
@@ -153,8 +139,8 @@ exports.vote = function(request, response) {
 		}).save({ votes: option.get('votes') + 1 }, { patch: true }).then(function(option) {
 			if (track) {
 				// if ip should be tracked
-				new IpAddress({ poll_id: pollId, ip_address: request.ip }).save().then(function(ip) {
-					response.send(ip.toJSON());
+				new IpAddress({ poll_id: pollId, ip_address: ipAddress }).save().then(function(ip) {
+					response.send(option.toJSON());
 				});
 			} else {
 				response.send(option.toJSON());

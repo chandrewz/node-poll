@@ -128,9 +128,8 @@ exports.vote = function(request, response) {
 
 		console.log(3)
 		console.log(option);
-		console.log(option.related('poll').track_ip)
-		console.log(option.get('related'))
-		console.log(option.get('related').track_ip)
+		console.log(option.related('poll'))
+		console.log(option.related('poll').attributes)
 
 		// check if poll cares about ip
 		var track = option.related('poll').track_ip;

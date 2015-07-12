@@ -12,6 +12,7 @@ var util = require('util');
 /**
  * GET /api/polls
  * Find all polls with their names. No poll options included.
+ * TODO: Paging
  */
 exports.getAllPolls = function(request, response) {
 	Poll.fetchAll().then(function(polls) {

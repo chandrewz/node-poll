@@ -20,6 +20,7 @@ $( "form" ).submit(function( event ) {
 		success: function(data) {
 			$('#modal-title').text('Wow, poll created!');
 			$('#modal-body').html('You can see your poll here: <a href="http://node-poll.herokuapp.com/poll/' + data.id + '">http://node-poll.herokuapp.com/poll/' + data.id + '</a>');
+			$('#modal').modal('show');
 		},
 		dataType: "json",
 		contentType : "application/json"

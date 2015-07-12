@@ -2,10 +2,11 @@
  * Models
  */
 
-exports.knex = require('knex')({
+var knex = require('knex')({
 	client: 'pg',
 	connection: process.env.DATABASE_URL
 });
+exports.knex = knex;
 
 var bookshelf = require('bookshelf')(knex);
 

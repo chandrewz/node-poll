@@ -35,11 +35,10 @@ exports.getPoll = function(request, response, json) {
 			response.send(poll.toJSON());
 		} else {
 			var p = { name: poll.get('name') };
-			var o = poll.related('options').attributes;
-			console.log(poll)
-			console.log(poll.related('options'))
 			console.log(p)
-			console.log(o)
+			var o = poll.related('options').attributes;
+			var json JSON.parse(poll.toJSON());
+			console.log(json)
 			response.render('pages/poll', {
 				poll: p,
 				options: o

@@ -1,7 +1,7 @@
 /**
  * Models
  */
-var models = require('./models/models');
+var models = require('../models/models');
 var knex = models.knex;
 var Poll = models.Poll;
 var PollOption = models.PollOption;

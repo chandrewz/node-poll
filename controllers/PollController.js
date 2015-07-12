@@ -18,7 +18,7 @@ exports.getAllPolls = function(request, response) {
 		if (polls) {
 			response.send(polls.toJSON());
 		} else {
-			response.send({msg: 'No polls found.'}, 404);
+			response.status(404).send({msg: 'No polls found.'});
 		}
 	});
 }
@@ -127,7 +127,7 @@ exports.vote = function(request, response) {
 			IpAddress.where({ poll_id: pollId, ip_address: ipAddress }).fetch().then(function(ip) {
 				if (ip) {
 					// this ip has already voted on this poll
-					response.send({msg: ipAddress + ' has already voted.'}, '400');
+					response.status(400).send({msg: ipAddress + ' has already voted.'});
 				} else {
 					// increment vote by 1
 					new PollOption({

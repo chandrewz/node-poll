@@ -6,14 +6,13 @@ var knex = require('knex')({
 	client: 'pg',
 	connection: process.env.DATABASE_URL
 });
-exports.knex = knex;
 
 var bookshelf = require('bookshelf')(knex);
 
 /**
  * Table: polls
  */
-exports.Poll = bookshelf.Model.extend({
+var Poll = bookshelf.Model.extend({
 	tableName: 'polls',
 	options: function() {
 		return this.hasMany(PollOption, 'poll_id');
@@ -23,9 +22,13 @@ exports.Poll = bookshelf.Model.extend({
 /**
  * Table: options
  */
-exports.PollOption = bookshelf.Model.extend({
+var PollOption = bookshelf.Model.extend({
 	tableName: 'options',
 	poll: function() {
 		return this.belongsTo(Poll, 'id');
 	}
 });
+
+exports.knex = knex;
+exports.Poll = Poll;
+exports.PollOption = PollOption;

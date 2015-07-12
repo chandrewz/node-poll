@@ -15,16 +15,25 @@
     
     <form>
       <div class="form-group">
-        <input name="name" type="text" class="form-control floating-label" placeholder="Type your question here">
+        <input name="question" type="text" class="form-control floating-label" placeholder="Type your question here">
+      </div>
+      <div id="options">
+        <div class="form-group">
+          <input name="option" type="text" class="form-control floating-label" placeholder="Enter poll option">
+        </div>
+        <div class="form-group">
+          <input name="option" type="text" class="form-control floating-label" placeholder="Enter poll option">
+        </div>
+        <div class="form-group">
+          <input name="option" type="text" class="form-control floating-label last-option" placeholder="Enter poll option">
+        </div>
       </div>
       <div class="form-group">
-        <input name="option" type="text" class="form-control floating-label" placeholder="Enter poll option">
-      </div>
-      <div class="form-group">
-        <input name="option" type="text" class="form-control floating-label" placeholder="Enter poll option">
-      </div>
-      <div class="form-group">
-        <input name="option" type="text" class="form-control floating-label" placeholder="Enter poll option">
+        <div class="checkbox">
+          <label>
+            <input id="track" type="checkbox">&nbsp;&nbsp;Prevent votes from the same IP from voting again
+          </label>
+        </div>
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-lg btn-primary">Create Poll</button>
@@ -34,6 +43,7 @@
   </div>
 </div>
 
+<% include ../partials/modal.ejs %>
 <% include ../partials/footer.ejs %>
 
 </body>

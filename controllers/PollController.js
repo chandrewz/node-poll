@@ -65,7 +65,7 @@ exports.createPoll = function(request, response) {
 		return;
 	}
 
-	new Poll({ name: request.body.name, track_ip: request.track_ip }).save().then(function(poll) {
+	new Poll({ name: request.body.name, track_ip: request.body.track_ip }).save().then(function(poll) {
 		optionsArray = [];
 		options = request.body.options;
 		for (i in options) {

@@ -25,7 +25,7 @@ var Poll = bookshelf.Model.extend({
 var PollOption = bookshelf.Model.extend({
 	tableName: 'options',
 	poll: function() {
-		return this.belongsTo(Poll, 'id');
+		return this.hasOne(Poll, 'id');
 	}
 });
 

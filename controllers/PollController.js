@@ -42,7 +42,7 @@ exports.getAllOptions = function(request, response) {
  * GET /api/option/:id
  * Find poll option with its related poll.
  */
-exports.getOptions = function(request, response) {
+exports.getOption = function(request, response) {
 	PollOption.where({ id: request.params.id }).fetch({ withRelated: ['poll'] }).then(function(option) {
 		response.send(option.toJSON());
 	});

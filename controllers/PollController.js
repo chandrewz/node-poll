@@ -9,6 +9,7 @@ var PollOption = models.PollOption;
 var util = require('util');
 
 /**
+ * GET /api/polls
  * Find all polls with their names. No poll options included.
  */
 exports.getAllPolls = function(request, response) {
@@ -18,6 +19,7 @@ exports.getAllPolls = function(request, response) {
 }
 
 /**
+ * GET /api/poll/:id
  * Find a poll by id and returns it with the related poll options.
  */
 exports.getPoll = function(request, response) {
@@ -27,7 +29,8 @@ exports.getPoll = function(request, response) {
 }
 
 /**
- * Find all poll options, without the poll.
+ * GET /api/options
+ * Find all poll options, without corresponding parent polls.
  */
 exports.getAllOptions = function(request, response) {
 	PollOption.fetchAll().then(function(options) {
@@ -36,6 +39,17 @@ exports.getAllOptions = function(request, response) {
 }
 
 /**
+ * GET /api/option/:id
+ * Find poll option with its related poll.
+ */
+exports.getOptions = function(request, response) {
+	PollOption.where({ id: request.params.id }).fetch({ withRelated: ['poll'] }).then(function(option) {
+		response.send(option.toJSON());
+	});
+}
+
+/**
+ * POST /api/poll
  * Creates a poll.
  */
 exports.createPoll = function(request, response) {
@@ -78,9 +92,11 @@ exports.createPoll = function(request, response) {
 }
 
 /**
+ * PUT /api/poll/:id/vote
  * Vote on a poll option.
  */
 exports.vote = function(request, response) {
+
 	request.check('option_id', 'Invalid option_id.').notEmpty().isInt();
 	var errors = request.validationErrors();
 	if (errors) {

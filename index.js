@@ -24,14 +24,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 /**
- * Models
- */
-var models = require('./models/models');
-var knex = models.knex;
-var Poll = models.Poll;
-var PollOption = models.PollOption;
-
-/**
  * Routes
  */
 var PollController = require('./controllers/PollController');
@@ -42,6 +34,7 @@ app.get('/api/poll/:id', function(request, response) { PollController.getPoll(re
 app.post('/api/poll', function(request, response) { PollController.createPoll(request, response); });
 app.put('/api/poll/:id/vote', function(request, response) { PollController.vote(request, response); });
 app.get('/api/options', function(request, response) { PollController.getAllOptions(request, response); });
+app.get('/api/option/:id', function(request, response) { PollController.getOption(request, response); });
 
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));

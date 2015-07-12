@@ -122,19 +122,24 @@ exports.vote = function(request, response) {
 
 		// check if poll cares about ip
 		var track = option.related('poll').get('track_ip');
+		console.log(track)
 		var ipExistsAlready = false;
 		if (track) {
+			console.log(1)
 			IpAddress.where({ poll_id: pollId, ip_address: ipAddress }).fetch().then(function(ip) {
 				if (ip) {
+					console.log(2)
 					ipExistsAlready = true;
 				}
 			})
 		}
 
 		if (ipExistsAlready) {
+			console.log(3)
 			// this ip has already voted on this poll
 			response.send({msg: ipAddress + ' has already voted.'}, '400');
 		} else {
+			console.log(4)
 			// increment vote by 1
 			new PollOption({
 				id: optionId,

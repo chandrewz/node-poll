@@ -15,7 +15,11 @@ var util = require('util');
  */
 exports.getAllPolls = function(request, response) {
 	Poll.fetchAll().then(function(polls) {
-		response.send(polls.toJSON());
+		if (polls) {
+			response.send(polls.toJSON());
+		} else {
+			response.send({msg: 'No polls found.'}, 404);
+		}
 	});
 }
 
@@ -120,7 +124,7 @@ exports.vote = function(request, response) {
 	PollOption.where({
 		id: optionId,
 		poll_id: pollId
-	}).fetch({ withRelated: ['options'] }).then(function(option) {
+	}).fetch({ withRelated: ['poll'] }).then(function(option) {
 
 		console.log(3)
 		console.log(option);

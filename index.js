@@ -6,16 +6,12 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 // for validating input
-var validator = require('express-validator');
-app.use(validator({
+var util = require('util');
+var expressValidator = require('express-validator');
+app.use(expressValidator({
 	customValidators: {
 		isArray: function(value) {
 			return Array.isArray(value);
-		},
-		eachIsNotEmpty: function(values, prop) {
-			return values.every(function(val) {
-				return !validator.isEmpty(val.prop);
-			});
 		}
 	}
 }));
@@ -40,10 +36,7 @@ var PollOption = models.PollOption;
  * Routes
  */
 app.get('/', function(request, response) {
-  // response.render('pages/index')
-  // response.send(db)
-
-  response.send('OK');
+  response.send('Hello World');
 });
 
 app.get('/api/polls', function(request, response) {
@@ -55,11 +48,11 @@ app.get('/api/polls', function(request, response) {
 app.post('/api/poll', function(request, response) {
 
 	// validations
-	request.checkBody('topic', 'Invalid poll topic.').notEmpty().isAlpha();
-	request.checkBody('options', 'Invalid poll topic.').isArray().eachIsNotEmpty();
-	var errors = request.request.validationErrors();
+	request.check('topic', 'Invalid poll topic.').notEmpty();
+	request.check('options', 'Invalid poll options.').isArray();
+	var errors = request.validationErrors();
 	if (errors) {
-		response.send('Validation errors', 400);
+		response.send(util.inspect(errors), 400);
 		return;
 	}
 
@@ -97,6 +90,14 @@ app.get('/api/poll/:id', function(request, response) {
 });
 
 app.put('/api/poll/:id/vote', function(request, response) {
+
+	request.check('option_id', 'Invalid option_id.').notEmpty().isInt();
+	var errors = request.validationErrors();
+	if (errors) {
+		response.send(util.inspect(errors), 400);
+		return;
+	}
+
 	// fetch option by poll id and option id
 	PollOption.where({
 		id: request.body.option_id,

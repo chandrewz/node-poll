@@ -44,6 +44,7 @@ exports.getAllOptions = function(request, response) {
  */
 exports.getOption = function(request, response) {
 	PollOption.where({ id: request.params.id }).fetch({ withRelated: ['poll'] }).then(function(option) {
+		console.log(option);
 		response.send(option.toJSON());
 	});
 }
@@ -108,7 +109,7 @@ exports.vote = function(request, response) {
 	PollOption.where({
 		id: request.body.option_id,
 		poll_id: request.params.id
-	}).fetch().then(function(option) {
+	}).fetch({ withRelated: ['options'] }).then(function(option) {
 		// increment vote by 1
 		new PollOption({
 			id: request.body.option_id,

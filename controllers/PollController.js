@@ -35,7 +35,7 @@ exports.getPoll = function(request, response, json) {
 			response.send(poll.toJSON());
 		} else {
 			var p = { name: poll.get('name') };
-			var o = poll.related('options').attr;
+			var o = poll.related('options').attributes;
 			console.log(poll)
 			console.log(poll.related('options'))
 			console.log(p)

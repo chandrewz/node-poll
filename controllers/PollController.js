@@ -122,29 +122,33 @@ exports.vote = function(request, response) {
 
 		// check if poll cares about ip
 		var track = option.related('poll').get('track_ip');
+		var ipExistsAlready = false;
 		if (track) {
 			IpAddress.where({ poll_id: pollId, ip_address: ipAddress }).fetch().then(function(ip) {
 				if (ip) {
-					// this ip has already voted on this poll
-					response.send({msg: ipAddress + ' has already voted.'}, '400');
-					return;
+					ipExistsAlready = true;
 				}
 			})
 		}
 
-		// increment vote by 1
-		new PollOption({
-			id: optionId,
-			poll_id: pollId
-		}).save({ votes: option.get('votes') + 1 }, { patch: true }).then(function(option) {
-			if (track) {
-				// if ip should be tracked
-				new IpAddress({ poll_id: pollId, ip_address: ipAddress }).save().then(function(ip) {
+		if (ipExistsAlready) {
+			// this ip has already voted on this poll
+			response.send({msg: ipAddress + ' has already voted.'}, '400');
+		} else {
+			// increment vote by 1
+			new PollOption({
+				id: optionId,
+				poll_id: pollId
+			}).save({ votes: option.get('votes') + 1 }, { patch: true }).then(function(option) {
+				if (track) {
+					// if ip should be tracked
+					new IpAddress({ poll_id: pollId, ip_address: ipAddress }).save().then(function(ip) {
+						response.send(option.toJSON());
+					});
+				} else {
 					response.send(option.toJSON());
-				});
-			} else {
-				response.send(option.toJSON());
-			}
-		});
+				}
+			});
+		}
 	});
 }

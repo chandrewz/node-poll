@@ -33,7 +33,7 @@ var PollOption = bookshelf.Model.extend({
  * Table: ip_addresses
  */
 var IpAddress = bookshelf.Model.extend({
-	tableName: 'ip_address',
+	tableName: 'ip_addresses',
 	poll: function() {
 		return this.belongsTo(Poll);
 	}

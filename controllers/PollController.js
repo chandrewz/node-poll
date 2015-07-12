@@ -106,6 +106,7 @@ exports.vote = function(request, response) {
 	request.check('option_id', 'Invalid option_id.').notEmpty().isInt();
 	var errors = request.validationErrors();
 	if (errors) {
+		console.log(1.1)
 		response.send(util.inspect(errors), 400);
 		return;
 	}
@@ -127,6 +128,7 @@ exports.vote = function(request, response) {
 		// check if poll cares about ip
 		var track = option.related('poll').track_ip;
 		if (track) {
+			console.log(3.1)
 			IpAddress.where({ poll_id: pollId, ip_address: request.ip }).fetch().then(function(ip) {
 				if (ip) {
 					// this ip has already voted on this poll

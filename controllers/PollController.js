@@ -5,6 +5,7 @@ var models = require('../models/models');
 var knex = models.knex;
 var Poll = models.Poll;
 var PollOption = models.PollOption;
+var IpAddress = models.IpAddress;
 
 var util = require('util');
 
@@ -100,12 +101,16 @@ exports.createPoll = function(request, response) {
  */
 exports.vote = function(request, response) {
 
+	console.log(1)
+
 	request.check('option_id', 'Invalid option_id.').notEmpty().isInt();
 	var errors = request.validationErrors();
 	if (errors) {
 		response.send(util.inspect(errors), 400);
 		return;
 	}
+
+	console.log(2)
 
 	var pollId = request.params.id;
 	var optionId = request.body.option_id;
@@ -116,6 +121,7 @@ exports.vote = function(request, response) {
 		poll_id: pollId
 	}).fetch({ withRelated: ['options'] }).then(function(option) {
 
+		console.log(3)
 		console.log(option);
 
 		// check if poll cares about ip
@@ -129,6 +135,7 @@ exports.vote = function(request, response) {
 				}
 			})
 		}
+		console.log(4)
 
 		// increment vote by 1
 		new PollOption({

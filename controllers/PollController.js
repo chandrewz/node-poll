@@ -43,6 +43,7 @@ exports.getPoll = function(request, response, json) {
 				for (i in p.options) {
 					p.total += p.options.votes;
 				}
+				console.log(p.total);
 				response.render('pages/results', { poll: p, options: p.options });
 			}
 		}

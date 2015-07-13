@@ -64,7 +64,7 @@ $('#poll').submit(function(event) {
 				$('#modal-body').html('Someone from this IP has already voted on this poll.');
 				$('#modal').modal('show');
 			}
-		}
+		},
 		dataType: 'json',
 		contentType : 'application/json'
 	});

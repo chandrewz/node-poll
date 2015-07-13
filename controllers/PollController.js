@@ -40,7 +40,9 @@ exports.getPoll = function(request, response, json) {
 				response.render('pages/poll', { poll: p, options: p.options });
 			} else {
 				p.total = 0;
-				$.each(p.options, function() { p.total += this.votes });
+				for (i in p.options) {
+					p.total += p.options.votes;
+				}
 				response.render('pages/results', { poll: p, options: p.options });
 			}
 		}

@@ -19,7 +19,7 @@
         <h3><%= option.name %></h3>
         <h4><%= option.votes %></h4>
         <div class="progress">
-          <div class="progress-bar" style="width: 60%;"></div>
+          <div class="progress-bar" style="width: <%= option.votes / poll.total * 100 %>%;"></div>
         </div>
       <% }) %>
 

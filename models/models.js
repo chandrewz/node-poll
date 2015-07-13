@@ -11,6 +11,7 @@ var bookshelf = require('bookshelf')(knex);
 
 /**
  * Table: polls
+ * Columns: id, name, track_ip
  */
 var Poll = bookshelf.Model.extend({
 	tableName: 'polls',
@@ -21,6 +22,7 @@ var Poll = bookshelf.Model.extend({
 
 /**
  * Table: options
+ * Columns: id, poll_id, name, votes
  */
 var PollOption = bookshelf.Model.extend({
 	tableName: 'options',
@@ -31,6 +33,7 @@ var PollOption = bookshelf.Model.extend({
 
 /**
  * Table: ip_addresses
+ * Column: id, poll_id, ip_address
  */
 var IpAddress = bookshelf.Model.extend({
 	tableName: 'ip_addresses',

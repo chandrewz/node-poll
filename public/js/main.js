@@ -25,6 +25,11 @@ $('#create-poll').submit(function( event ) {
 			$('#modal-body').html('You can see your poll here: <a href="http://node-poll.herokuapp.com/poll/' + data.id + '">http://node-poll.herokuapp.com/poll/' + data.id + '</a>');
 			$('#modal').modal('show');
 		},
+		error: function() {
+			$('#modal-title').text('Error');
+			$('#modal-body').html('Whoops.');
+			$('#modal').modal('show');
+		},
 		dataType: 'json',
 		contentType : 'application/json'
 	});
@@ -64,6 +69,11 @@ $('#poll').submit(function(event) {
 				$('#modal-body').html('Someone from this IP has already voted on this poll.');
 				$('#modal').modal('show');
 			}
+		},
+		error: function() {
+			$('#modal-title').text('Error');
+			$('#modal-body').html('Whoops.');
+			$('#modal').modal('show');
 		},
 		dataType: 'json',
 		contentType : 'application/json'

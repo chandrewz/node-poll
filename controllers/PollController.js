@@ -37,20 +37,25 @@ exports.getAllPolls = function(request, response, json) {
  */
 exports.getPoll = function(request, response, json) {
 	Poll.where({ id: request.params.id }).fetch({ withRelated: ['options'] }).then(function(poll) {
-		if (json) {
-			response.send(poll.toJSON());
-		} else {
-			var p = poll.toJSON();
-			if (request.url.indexOf('results') === -1) {
-				response.render('pages/poll', { poll: p, options: p.options });
+		if (poll) {
+			if (json) {
+				response.send(poll.toJSON());
 			} else {
-				p.total = 0;
-				for (i in p.options) {
-					p.total += p.options[i].votes;
+				var p = poll.toJSON();
+				if (request.url.indexOf('results') === -1) {
+					// poll page view
+					response.render('pages/poll', { poll: p, options: p.options });
+				} else {
+					// poll results view
+					p.total = 0;
+					for (i in p.options) {
+						p.total += p.options[i].votes;
+					}
+					response.render('pages/results', { poll: p, options: p.options });
 				}
-				console.log(p.total);
-				response.render('pages/results', { poll: p, options: p.options });
 			}
+		} else {
+			response.status(404).send({msg: 'No poll found.'});
 		}
 	});
 }
@@ -61,7 +66,11 @@ exports.getPoll = function(request, response, json) {
  */
 exports.getAllOptions = function(request, response) {
 	PollOption.fetchAll().then(function(options) {
-		response.send(options.toJSON());
+		if (options) {
+			response.send(options.toJSON());
+		} else {
+			response.status(404).send({msg: 'No options found.'});
+		}
 	});
 }
 
@@ -71,7 +80,11 @@ exports.getAllOptions = function(request, response) {
  */
 exports.getOption = function(request, response) {
 	PollOption.where({ id: request.params.id }).fetch({ withRelated: ['poll'] }).then(function(option) {
-		response.send(option.toJSON());
+		if (option) {
+			response.send(option.toJSON());
+		} else {
+			response.status(404).send({msg: 'No option found.'});
+		}
 	});
 }
 
@@ -164,7 +177,7 @@ exports.vote = function(request, response) {
 				}
 			})
 		} else {
-			// increment vote by 1
+			// no ip needed to be tracked, increment vote by 1
 			new PollOption({
 				id: optionId,
 				poll_id: pollId

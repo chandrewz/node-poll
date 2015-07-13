@@ -27,6 +27,7 @@ exports.getAllPolls = function(request, response) {
 /**
  * GET /api/poll/:id
  * GET /poll/:id
+ * GET /poll/:id/results
  * Find a poll by id and returns it with the related poll options.
  */
 exports.getPoll = function(request, response, json) {
@@ -35,7 +36,7 @@ exports.getPoll = function(request, response, json) {
 			response.send(poll.toJSON());
 		} else {
 			var p = poll.toJSON();
-			if ('results'.indexOf(request.url) === -1) {
+			if (request.url.indexOf('results') === -1) {
 				response.render('pages/poll', { poll: p, options: p.options });
 			} else {
 				response.render('pages/results', { poll: p, options: p.options });

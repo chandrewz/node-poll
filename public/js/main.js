@@ -48,10 +48,11 @@ lastOption();
  */
 $('#poll').submit(function(event) {
 	event.preventDefault();
+	var option = { option_id: $('input[name="option"]:checked', '#poll').val() };
 	$.ajax({
 		type: 'PUT',
 		url: '/api/poll/' + $('#poll').attr('data-id') + '/vote',
-		data: { option_id: $('input[name="option"]:checked', '#poll').val() },
+		data: JSON.stringify(option),
 		success: function(data) {
 			$('#modal-title').text('Your vote is cast!');
 			$('#modal-body').html('You can see the poll results here: <a href="http://node-poll.herokuapp.com/poll/' + data.id + '/results">http://node-poll.herokuapp.com/poll/' + data.id + '/results</a>');

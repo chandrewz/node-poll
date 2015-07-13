@@ -35,11 +35,11 @@ exports.getPoll = function(request, response, json) {
 			response.send(poll.toJSON());
 		} else {
 			var p = poll.toJSON();
-			console.log(json)
-			response.render('pages/poll', {
-				poll: p,
-				options: p.options
-			});
+			if ('results'.indexOf(request.url) === -1) {
+				response.render('pages/poll', { poll: p, options: p.options });
+			} else {
+				response.render('pages/results', { poll: p, options: p.options });
+			}
 		}
 	});
 }

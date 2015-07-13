@@ -30,9 +30,8 @@ var PollController = require('./controllers/PollController');
 
 app.get('/', function(request, response) { response.render('pages/index'); });
 app.get('/poll/:id', function(request, response) { PollController.getPoll(request, response) });
-app.get('/poll/:id/results', function(request, response) { response.render('pages/results') });
 app.get('/api/polls', function(request, response) { PollController.getAllPolls(request, response); });
-app.get('/api/poll/:id', function(request, response) { PollController.getPoll(request, response); });
+app.get('/api/poll/:id', function(request, response) { PollController.getPoll(request, response, true); });
 app.post('/api/poll', function(request, response) { PollController.createPoll(request, response); });
 app.put('/api/poll/:id/vote', function(request, response) { PollController.vote(request, response); });
 app.get('/api/options', function(request, response) { PollController.getAllOptions(request, response); });

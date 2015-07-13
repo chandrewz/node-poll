@@ -14,10 +14,15 @@ var util = require('util');
  * Find all polls with their names. No poll options included.
  * TODO: Paging
  */
-exports.getAllPolls = function(request, response) {
+exports.getAllPolls = function(request, response, json) {
 	Poll.fetchAll().then(function(polls) {
 		if (polls) {
-			response.send(polls.toJSON());
+			var polls = polls.toJSON();
+			if (json) {
+				response.send(polls);
+			} else {
+				response.render('pages/polls', { polls: polls });
+			}
 		} else {
 			response.status(404).send({msg: 'No polls found.'});
 		}

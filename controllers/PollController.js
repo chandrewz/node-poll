@@ -35,13 +35,12 @@ exports.getPoll = function(request, response, json) {
 			response.send(poll.toJSON());
 		} else {
 			var p = { name: poll.get('name') };
-			console.log(p)
-			var o = poll.related('options').attributes;
+			console.log(p);
 			var json = JSON.parse(poll.toJSON());
 			console.log(json)
 			response.render('pages/poll', {
 				poll: p,
-				options: o
+				options: json.options
 			});
 		}
 	});

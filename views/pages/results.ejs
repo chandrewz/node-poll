@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+
+    <h1><%= poll.name %></h1>
+    
+    <div data-id="<%= poll.id %>">
+
+      <% options.forEach(function(option) { %>
+        <h3>option.name</h3>
+        <div class="progress">
+          <div class="progress-bar" style="width: 60%;"></div>
+        </div>
+      <% }) %>
+
+      <a href="/poll/<%= poll.id %>" class="btn btn-lg btn-primary">Go to poll</a>
+    </div>
+
+  </div>
+</div>
+
+<% include ../partials/modal.ejs %>
+<% include ../partials/footer.ejs %>
+
+</body>
+
+</html>

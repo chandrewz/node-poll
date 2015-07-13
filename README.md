@@ -2,7 +2,7 @@
 
 A weekend Node.js project imitating [strawpoll.me](http://strawpoll.me).
 
-App is hosted on Heroku: [poll-node.herokuapp.com](http://poll-node.herokuapp.com)
+App is hosted on Heroku: [node-poll.herokuapp.com](http://poll-node.herokuapp.com)
 
 ## API
 

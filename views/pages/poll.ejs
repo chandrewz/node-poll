@@ -13,13 +13,13 @@
 
     <h1><%= poll.name %></h1>
     
-    <form>
+    <form id="poll" data-id="<%= poll.id %>">
       <div class="form-group text-left">
         <% options.forEach(function(option) { %>
           <div class="radio radio-primary">
             <label>
-              <input type="radio" name="option" value="<% option.id %>">
-              <% option.name %>
+              <input type="radio" name="option" value="<%= option.id %>">
+              <%= option.name %>
             </label>
           </div>
         <% }) %>

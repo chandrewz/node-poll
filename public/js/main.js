@@ -1,7 +1,7 @@
 /**
- * Submit the poll.
+ * Create a poll.
  */
-$( "form" ).submit(function( event ) {
+$('#create-poll').submit(function( event ) {
 	event.preventDefault();
 	var formArray = $( this ).serializeArray();
 
@@ -17,16 +17,16 @@ $( "form" ).submit(function( event ) {
 	postData.track_ip = $('#track').is(':checked');
 
 	$.ajax({
-		type: "POST",
-		url: "api/poll",
+		type: 'POST',
+		url: 'api/poll',
 		data: JSON.stringify(postData),
 		success: function(data) {
 			$('#modal-title').text('Wow, poll created!');
 			$('#modal-body').html('You can see your poll here: <a href="http://node-poll.herokuapp.com/poll/' + data.id + '">http://node-poll.herokuapp.com/poll/' + data.id + '</a>');
 			$('#modal').modal('show');
 		},
-		dataType: "json",
-		contentType : "application/json"
+		dataType: 'json',
+		contentType : 'application/json'
 	});
 });
 
@@ -42,3 +42,22 @@ function lastOption() {
 	});
 }
 lastOption();
+
+/**
+ * Vote on a poll.
+ */
+$('#poll').submit(function(event) {
+	event.preventDefault();
+	$.ajax({
+		type: 'PUT',
+		url: 'api/poll/' + $('#poll').attr('data-id'),
+		data: { option_id: $('input[name="option"]:checked', '#poll').val() },
+		success: function(data) {
+			$('#modal-title').text('Your vote is cast!');
+			$('#modal-body').html('You can see the poll results here: <a href="http://node-poll.herokuapp.com/poll/' + data.id + '/results">http://node-poll.herokuapp.com/poll/' + data.id + '/results</a>');
+			$('#modal').modal('show');
+		},
+		dataType: 'json',
+		contentType : 'application/json'
+	});
+});

@@ -36,7 +36,7 @@ exports.getPoll = function(request, response, json) {
 		} else {
 			var p = { name: poll.get('name') };
 			console.log(p);
-			var json = JSON.parse(poll.toJSON());
+			var json = poll.toJSON();
 			console.log(json)
 			response.render('pages/poll', {
 				poll: p,

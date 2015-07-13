@@ -144,7 +144,7 @@ exports.vote = function(request, response) {
 			IpAddress.where({ poll_id: pollId, ip_address: ipAddress }).fetch().then(function(ip) {
 				if (ip) {
 					// this ip has already voted on this poll
-					response.status(400).send({msg: ipAddress + ' has already voted.'});
+					response.status(403).send({msg: ipAddress + ' has already voted.'});
 				} else {
 					// increment vote by 1
 					new PollOption({

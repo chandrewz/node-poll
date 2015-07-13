@@ -55,9 +55,16 @@ $('#poll').submit(function(event) {
 		data: JSON.stringify(option),
 		success: function(data) {
 			$('#modal-title').text('Your vote is cast!');
-			$('#modal-body').html('You can see the poll results here: <a href="http://node-poll.herokuapp.com/poll/' + data.id + '/results">http://node-poll.herokuapp.com/poll/' + data.id + '/results</a>');
+			$('#modal-body').html('You can see the poll results here: <a href="http://node-poll.herokuapp.com/poll/' + data.poll_id + '/results">http://node-poll.herokuapp.com/poll/' + data.poll_id + '/results</a>');
 			$('#modal').modal('show');
 		},
+		statusCode: {
+			403: function() {
+				$('#modal-title').text('You have already voted.');
+				$('#modal-body').html('Someone from this IP has already voted on this poll.');
+				$('#modal').modal('show');
+			}
+		}
 		dataType: 'json',
 		contentType : 'application/json'
 	});

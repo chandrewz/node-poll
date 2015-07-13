@@ -13,10 +13,11 @@
 
     <h1><%= poll.name %></h1>
     
-    <div data-id="<%= poll.id %>">
+    <div data-id="<%= poll.id %>" class="text-left">
 
       <% options.forEach(function(option) { %>
-        <h3>option.name</h3>
+        <h3><%= option.name %></h3>
+        <h4><%= option.votes %></h4>
         <div class="progress">
           <div class="progress-bar" style="width: 60%;"></div>
         </div>

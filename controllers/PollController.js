@@ -39,6 +39,8 @@ exports.getPoll = function(request, response, json) {
 			if (request.url.indexOf('results') === -1) {
 				response.render('pages/poll', { poll: p, options: p.options });
 			} else {
+				p.total = 0;
+				$.each(p.options, function() { p.total += this.votes });
 				response.render('pages/results', { poll: p, options: p.options });
 			}
 		}

@@ -18,7 +18,7 @@ $('#create-poll').submit(function( event ) {
 
 	$.ajax({
 		type: 'POST',
-		url: 'api/poll',
+		url: '/api/poll',
 		data: JSON.stringify(postData),
 		success: function(data) {
 			$('#modal-title').text('Wow, poll created!');
@@ -50,7 +50,7 @@ $('#poll').submit(function(event) {
 	event.preventDefault();
 	$.ajax({
 		type: 'PUT',
-		url: 'api/poll/' + $('#poll').attr('data-id') + '/vote',
+		url: '/api/poll/' + $('#poll').attr('data-id') + '/vote',
 		data: { option_id: $('input[name="option"]:checked', '#poll').val() },
 		success: function(data) {
 			$('#modal-title').text('Your vote is cast!');
